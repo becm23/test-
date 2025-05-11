@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Fuse.js Live Search</title>
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Live Search with Fuse.js</h1>
+  <input type="text" id="searchInput" placeholder="Search by name or role..." />
+  <ul id="results"></ul>
+
+  <script src="data.js"></script>
+  <script>
+    const options = {
+      keys: ["name", "role"],
+      includeScore: true
+    };
+
+    const fuse = new Fuse(data, options);
+
+    const searchInput = document.getElementById("searchInput");
+    const resultsList = document.getElementById("results");
+
+    searchInput.addEventListener("input", () => {
+      const query = searchInput.value;
+      const results = fuse.search(query);
+
+      resultsList.innerHTML = "";
+
+      results.forEach(result => {
+        const li = document.createElement("li");
+        li.textContent = `${result.item.name} - ${result.item.role}`;
+        resultsList.appendChild(li);
+      });
+    });
+  </script>
+</body>
+</html>
